@@ -1,0 +1,31 @@
+@startuml
+
+participant XCX
+participant SendMsg<<云函数>>
+participant DB
+
+XCX -> SendMsg
+activate SendMsg
+SendMsg -> DB:getGroup()
+activate DB
+SendMsg <-- DB: Group
+deactivate DB
+alt group not exist
+    SendMsg -> DB:createChatgroup(id, userId_1, userId_2)
+    activate DB
+    SendMsg <-- DB:groupId
+    deactivate DB
+end
+SendMsg -> DB: insertChatroom(msg)
+activate DB
+SendMsg <-- DB: id
+deactivate DB
+SendMsg -> DB: updateChatgroup(unread, last_msg)
+activate DB
+SendMsg <-- DB: success
+deactivate DB
+
+XCX <-- SendMsg: success
+deactivate SendMsg
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+
+participant XCX
+participant AcceptOrder<<云函数>>
+participant DB
+
+XCX -> AcceptOrder
+activate AcceptOrder
+AcceptOrder -> DB:getRequirement()
+activate DB
+AcceptOrder <-- DB: RequirementTicket
+AcceptOrder -> AcceptOrder: 验证需求所有权
+deactivate DB
+alt user_id != RequirementTicket.user_id
+    AcceptOrder --> XCX: fail
+end
+AcceptOrder -> DB: updateRequirementTicket(id, PROCESSED)
+activate DB
+AcceptOrder <-- DB: success
+deactivate DB
+AcceptOrder -> DB: updateOrder(id, ACCEPTED)
+activate DB
+AcceptOrder <-- DB: success
+deactivate DB
+AcceptOrder -> DB: rejectOthers(requirement_id, order_id, REJECTED)
+activate DB
+AcceptOrder <-- DB: success
+deactivate DB
+
+XCX <-- AcceptOrder: success
+deactivate AcceptOrder
+
+@enduml
