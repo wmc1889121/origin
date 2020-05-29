@@ -1,0 +1,35 @@
+@startuml
+
+participant XCX
+participant Login<<云函数>>
+participant DB
+participant Wechat_BE
+
+XCX -> Login
+activate Login
+Login -> Wechat_BE:cloud.getWXContext()
+activate Wechat_BE
+Login <-- Wechat_BE: wxContent
+deactivate Wechat_BE
+Login -> DB:getByOpenid()
+activate DB
+Login <-- DB: User
+deactivate DB
+alt user not exist
+    Login -> DB:registerUser(id, openid)
+    activate DB
+    Login <-- DB: success
+    deactivate DB
+end
+XCX <-- Login: User
+deactivate Login
+
+alt if user.is_new_register == true
+    XCX -> XCX: wx.getUserInfo
+    XCX -> DB: Update(_id, name, avatar, sex)
+    activate DB
+    XCX <-- DB: success
+    deactivate DB
+end
+
+@enduml

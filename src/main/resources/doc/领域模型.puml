@@ -1,0 +1,125 @@
+@startuml
+
+class User {
+  - id: long
+  - openid: string
+  - avatar: string
+  - name: string
+  - sex: string
+  - birthday: date
+  - mobile: long
+  - email: string
+  - ability: string
+  - location: Location
+  - stars: int
+  - certificate: string
+  - self_description: string
+  - educations: Education[]
+  - comments: Comment
+  - create_time: date
+  - modify_time: date
+}
+
+class Location {
+  - parent_id: int
+  - id: int
+  - level: int
+  - name: string
+}
+
+class Education {
+  - id: long
+  - user_id: long
+  - college: string
+  - major: string
+  - degree: string
+  - begin: date
+  - end: date
+}
+
+class Favorite {
+  - id: long
+  - user_id: long
+  - requirement_id: long
+  - create_time: date
+}
+
+class RequirementTicket {
+  - id: long
+  - state: RequirementTicketState
+  - user_id: long
+  - name: string
+  - reward: long
+  - location: Location
+  - description: string
+  - create_time: date
+  - modify_time: date
+}
+
+enum RequirementTicketState {
+  PUBLISHED
+  BE_APPLIED
+  PROCESSED
+  COMPLETED
+}
+
+class Order {
+  - id: long
+  - user_id: long
+  - requirement_id: long
+  - state: OrderState
+  - name: string
+  - amount: long
+  - create_time: date
+  - modify_time: date
+}
+
+enum OrderState {
+    INIT
+    ACCEPTED
+    REJECTED
+}
+
+class Comment {
+  - id: long
+  - user_id: long // 被评论
+  - comment_by: long
+  - stars: int
+  - remark: string
+  - createTime: date
+}
+
+class ChatRoom {
+  - id: long
+  - user_id: long
+  - name: string,
+  - group_id: long
+  - avatar: string
+  - text_content: string
+  - msg_type: string // text,image
+  - send_time: date
+}
+
+class ChatGroup {
+  - id: long
+  - user_id_1: long
+  - unread_1: int
+  - last_msg_1: string
+  - user_id_2: long
+  - unread_2: int
+  - last_msg_2: string
+}
+
+Favorite "n"<--"1" User
+Comment "n"<--"1" User
+User "n" --> "1" Location
+User "1"->"n" RequirementTicket
+RequirementTicket -> RequirementTicketState
+RequirementTicket "n"->"1" Location
+Education "n" <- "1" User
+User "1"-->"n" Order
+Order -> OrderState
+
+ChatGroup "1" -> "n" ChatRoom
+
+@enduml
