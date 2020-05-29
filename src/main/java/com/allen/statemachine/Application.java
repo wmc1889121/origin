@@ -1,4 +1,4 @@
-package com.allen.origin;
+package com.allen.statemachine;
 
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
@@ -10,10 +10,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @SpringBootApplication
-public class OriginApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(OriginApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
     /**

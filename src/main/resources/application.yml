@@ -6,7 +6,13 @@ spring:
     name: origin
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/origin?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: root
-
+#    url: jdbc:mysql://localhost:3306/origin?useUnicode=true&characterEncoding=utf8
+#    username: root
+#    password: root
+    url: jdbc:mysql://10.160.240.132:6033/sysbench-test?useUnicode=true&characterEncoding=utf8
+    username: mos4
+    password: mos4-dev
+    hikari:
+      maximumPoolSize: 10
+      maxLifetime: 28800000
+      connectionTimeout: 5000
